@@ -7,20 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		163C7888A5DA0748552309E4 /* Pods_SchoolCreditCheckMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FDC41EA3639AF1354A7F108 /* Pods_SchoolCreditCheckMac.framework */; };
+		45788C7522266B45001A59A4 /* ListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45788C7422266B45001A59A4 /* ListController.swift */; };
+		45788C7722266C01001A59A4 /* AddSubjectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45788C7622266C01001A59A4 /* AddSubjectController.swift */; };
+		45788C7922277AEE001A59A4 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45788C7822277AEE001A59A4 /* Item.swift */; };
+		45788C7D22278FF1001A59A4 /* HomeController+outlineViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45788C7C22278FF1001A59A4 /* HomeController+outlineViewDelegate.swift */; };
+		45788C7F22279358001A59A4 /* HomeController+outlineViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45788C7E22279358001A59A4 /* HomeController+outlineViewDataSource.swift */; };
 		45D06CE421E851120015479E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D06CE321E851120015479E /* AppDelegate.swift */; };
-		45D06CE621E851120015479E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D06CE521E851120015479E /* ViewController.swift */; };
+		45D06CE621E851120015479E /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D06CE521E851120015479E /* HomeController.swift */; };
 		45D06CE821E851140015479E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45D06CE721E851140015479E /* Assets.xcassets */; };
 		45D06CEB21E851140015479E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45D06CE921E851140015479E /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		45788C7422266B45001A59A4 /* ListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListController.swift; sourceTree = "<group>"; };
+		45788C7622266C01001A59A4 /* AddSubjectController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubjectController.swift; sourceTree = "<group>"; };
+		45788C7822277AEE001A59A4 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		45788C7C22278FF1001A59A4 /* HomeController+outlineViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeController+outlineViewDelegate.swift"; sourceTree = "<group>"; };
+		45788C7E22279358001A59A4 /* HomeController+outlineViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeController+outlineViewDataSource.swift"; sourceTree = "<group>"; };
 		45D06CE021E851120015479E /* SchoolCreditCheckMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolCreditCheckMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D06CE321E851120015479E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		45D06CE521E851120015479E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		45D06CE521E851120015479E /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		45D06CE721E851140015479E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45D06CEA21E851140015479E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		45D06CEC21E851140015479E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		45D06CED21E851140015479E /* SchoolCreditCheckMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SchoolCreditCheckMac.entitlements; sourceTree = "<group>"; };
+		6FDC41EA3639AF1354A7F108 /* Pods_SchoolCreditCheckMac.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SchoolCreditCheckMac.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92D52D0508332466AE84537A /* Pods-SchoolCreditCheckMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolCreditCheckMac.release.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolCreditCheckMac/Pods-SchoolCreditCheckMac.release.xcconfig"; sourceTree = "<group>"; };
+		D86D6700294F37F213D0EA01 /* Pods-SchoolCreditCheckMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SchoolCreditCheckMac.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SchoolCreditCheckMac/Pods-SchoolCreditCheckMac.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				163C7888A5DA0748552309E4 /* Pods_SchoolCreditCheckMac.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,6 +54,8 @@
 			children = (
 				45D06CE221E851120015479E /* SchoolCreditCheckMac */,
 				45D06CE121E851120015479E /* Products */,
+				90DB6F3B5DD53D285945BDCC /* Pods */,
+				A6F793AE8980AF77E48126F4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,13 +71,35 @@
 			isa = PBXGroup;
 			children = (
 				45D06CE321E851120015479E /* AppDelegate.swift */,
-				45D06CE521E851120015479E /* ViewController.swift */,
+				45D06CE521E851120015479E /* HomeController.swift */,
+				45788C7C22278FF1001A59A4 /* HomeController+outlineViewDelegate.swift */,
+				45788C7E22279358001A59A4 /* HomeController+outlineViewDataSource.swift */,
+				45788C7822277AEE001A59A4 /* Item.swift */,
+				45788C7422266B45001A59A4 /* ListController.swift */,
+				45788C7622266C01001A59A4 /* AddSubjectController.swift */,
 				45D06CE721E851140015479E /* Assets.xcassets */,
 				45D06CE921E851140015479E /* Main.storyboard */,
 				45D06CEC21E851140015479E /* Info.plist */,
 				45D06CED21E851140015479E /* SchoolCreditCheckMac.entitlements */,
 			);
 			path = SchoolCreditCheckMac;
+			sourceTree = "<group>";
+		};
+		90DB6F3B5DD53D285945BDCC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D86D6700294F37F213D0EA01 /* Pods-SchoolCreditCheckMac.debug.xcconfig */,
+				92D52D0508332466AE84537A /* Pods-SchoolCreditCheckMac.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A6F793AE8980AF77E48126F4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6FDC41EA3639AF1354A7F108 /* Pods_SchoolCreditCheckMac.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,9 +109,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 45D06CF021E851140015479E /* Build configuration list for PBXNativeTarget "SchoolCreditCheckMac" */;
 			buildPhases = (
+				D3DB244ED4E8CB9C7B215DAA /* [CP] Check Pods Manifest.lock */,
 				45D06CDC21E851120015479E /* Sources */,
 				45D06CDD21E851120015479E /* Frameworks */,
 				45D06CDE21E851120015479E /* Resources */,
+				F486496C33122BCFB7D644AB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,13 +169,73 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D3DB244ED4E8CB9C7B215DAA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SchoolCreditCheckMac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F486496C33122BCFB7D644AB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SchoolCreditCheckMac/Pods-SchoolCreditCheckMac-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SchoolCreditCheckMac/Pods-SchoolCreditCheckMac-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		45D06CDC21E851120015479E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45D06CE621E851120015479E /* ViewController.swift in Sources */,
+				45788C7922277AEE001A59A4 /* Item.swift in Sources */,
+				45D06CE621E851120015479E /* HomeController.swift in Sources */,
 				45D06CE421E851120015479E /* AppDelegate.swift in Sources */,
+				45788C7F22279358001A59A4 /* HomeController+outlineViewDataSource.swift in Sources */,
+				45788C7D22278FF1001A59A4 /* HomeController+outlineViewDelegate.swift in Sources */,
+				45788C7722266C01001A59A4 /* AddSubjectController.swift in Sources */,
+				45788C7522266B45001A59A4 /* ListController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +370,7 @@
 		};
 		45D06CF121E851140015479E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D86D6700294F37F213D0EA01 /* Pods-SchoolCreditCheckMac.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SchoolCreditCheckMac/SchoolCreditCheckMac.entitlements;
@@ -288,6 +390,7 @@
 		};
 		45D06CF221E851140015479E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92D52D0508332466AE84537A /* Pods-SchoolCreditCheckMac.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SchoolCreditCheckMac/SchoolCreditCheckMac.entitlements;

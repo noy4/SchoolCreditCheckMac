@@ -12,9 +12,13 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
 
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+        NSApp.keyWindow?.contentMinSize = NSSize(width: 600, height: 300)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
