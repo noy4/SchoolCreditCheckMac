@@ -19,8 +19,15 @@ class ListController: NSViewController {
     
     var realm: Realm!
     var realmItems: Results<Section>?
-    var fireItems: [Subject]?
+    var sectionItems: Results<Section>?
+    var fireItems: [Subject] = []
     let creditArray = ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0"]
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        loadSubjects()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +37,6 @@ class ListController: NSViewController {
         realm = try! Realm(configuration: config)
         
         realmItems = realm.objects(Section.self).sorted(byKeyPath: "date")
-        tableView.reloadData()
         
         parentPopUp.removeAllItems()
         parentPopUp.addItems(withTitles: parentTitles())
@@ -39,6 +45,20 @@ class ListController: NSViewController {
     }
 
     @IBAction func buttonPressed(_ sender: NSButton) {
+//        let newSubject = Database.database().reference().child("subjects").childByAutoId()
+//        let subjectDic = ["title": textField.stringValue, "credit": creditConboBox.floatValue, "section": parentPopUp.titleOfSelectedItem] as [String : Any]
+//
+//        newSubject.setValue(subjectDic){
+//            (error, reference) in
+//
+//            if error != nil {
+//                print(error!)
+//            } else {
+//                print("Subject saved")
+//            }
+//        }
+        tableView.reloadData()
+        
     }
     
     func parentTitles() -> [String] {
@@ -46,43 +66,44 @@ class ListController: NSViewController {
         if let realmItems = realmItems {
             for r in realmItems {
                 if r.sections.count == 0 {
-                    switch r.title {
-//                    case "基幹教育セミナー":
-//                        let i = 0
-                    case "必修科目①":
-                        titles.append("理系ディシプリン科目（必修①）")
-                    case "選択必修科目":
-                        if r.needCredit == 4.5 {
-                            titles.append("理系ディシプリン科目（選択）")
-                        } else {
-                            titles.append("専攻教育科目（選択必修）")
-                        }
-                    case "必修科目②":
-                        titles.append("理系ディシプリン科目（必修②）")
-                    case "フロンティア科目":
-                        titles.append("総合科目（フロンティア）")
-                    case "オープン科目":
-                        titles.append("総合科目（オープン）")
-                    case "必修科目":
-                        titles.append("専攻教育科目（必修）")
-                    case "選択科目":
-                        titles.append("専攻教育科目（選択）")
-                    case "その他":
-                        let i = 0
-                    default:
-                        titles.append(r.title)
-                    }
+                    titles.append(r.title)
                 }
             }
         }
         return titles
     }
     
+    func loadSubjects(){
+        
+        let subjectDB = Database.database().reference().child("subjects")
+        
+        subjectDB.observe(.childAdded) { (snapshot) in
+            
+            let snapshotValue = snapshot.value as! Dictionary<String, Any>
+            
+            let title = snapshotValue["title"]!
+            let section = snapshotValue["section"]!
+            let credit = snapshotValue["credit"]!
+            
+            let subject = Subject()
+            
+            subject.title = title as! String
+            subject.section = section as! String
+            subject.credit = credit as! Float
+            
+            self.fireItems.append(subject)
+            
+            self.tableView.reloadData()
+        }
+        
+    }
+    
+    
 }
 
 extension ListController: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return realmItems?.count ?? 0
+        return fireItems.count 
     }
 }
 
@@ -99,16 +120,17 @@ extension ListController: NSTableViewDelegate {
         var cellIdentifier: String = ""
         
         // 1
-        guard let item = realmItems?[row] else {
-            return nil
-        }
+//        guard let item = fireItems?[row] else {
+//            return nil
+//        }
+        let item = fireItems[row]
         
         // 2
         if tableColumn == tableView.tableColumns[0] {
             text = item.title
             cellIdentifier = CellIdentifiers.TitleCell
         } else if tableColumn == tableView.tableColumns[1] {
-            text = String(item.needCredit)
+            text = String(item.credit)
             cellIdentifier = CellIdentifiers.CreditCell
         }
         

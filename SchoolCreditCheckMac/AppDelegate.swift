@@ -14,6 +14,10 @@ import FirebaseCore
 class AppDelegate: NSObject, NSApplicationDelegate {
 
 
+    override init() {
+        super.init()
+        FirebaseApp.configure()
+    }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
@@ -22,20 +26,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSApp.keyWindow?.contentMinSize = NSSize(width: 600, height: 300)
         
-        FirebaseApp.configure()
-        
         let seedFilePath = Bundle.main.url(forResource: "seed", withExtension: "realm")
-        let realmPath = seedFilePath?.deletingLastPathComponent().appendingPathComponent("3.realm")
+        let realmPath = seedFilePath?.deletingLastPathComponent().appendingPathComponent("1.realm")
         let copyPath = seedFilePath?.deletingLastPathComponent().appendingPathComponent("copy.realm")
         
-//        do {
+        do {
 //            try FileManager.default.copyItem(at: seedFilePath!, to: realmPath!)
-//            let config = Realm.Configuration(fileURL: realmPath)
-//            let realm = try Realm(configuration: config)
-////            try realm.writeCopy(toFile: copyPath!)
-//        } catch {
-//            print("Error initializing new realm, \(error)")
-//        }
+            let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 1)
+            let realm = try Realm(configuration: config)
+//            try realm.writeCopy(toFile: copyPath!)
+        } catch {
+            print("Error initializing new realm, \(error)")
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

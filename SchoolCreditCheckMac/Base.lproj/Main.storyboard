@@ -695,7 +695,7 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="OLw-J0-2iA" kind="relationship" relationship="window.shadowedContentViewController" id="lIW-HT-J4B"/>
+                        <segue destination="OLw-J0-2iA" kind="relationship" relationship="window.shadowedContentViewController" id="Mya-5Y-k3C"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -860,7 +860,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="1231"/>
+            <point key="canvasLocation" x="75" y="1048"/>
         </scene>
         <!--追加-->
         <scene sceneID="RM3-ww-R05">
@@ -1021,7 +1021,7 @@
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lBJ-7D-VQx">
                                             <rect key="frame" x="348" y="338" width="214" height="24"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="授業名" drawsBackground="YES" id="YJn-rh-XJl">
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="授業名" drawsBackground="YES" id="YJn-rh-XJl">
                                                 <font key="font" metaFont="system" size="16"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

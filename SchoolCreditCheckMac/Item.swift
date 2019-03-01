@@ -23,6 +23,7 @@ class Section: Object {
 
 class Subject: Object {
     @objc dynamic var title: String = ""
+    var section: String = ""
     @objc dynamic var credit: Float = 0
     @objc dynamic var date = Date()
 

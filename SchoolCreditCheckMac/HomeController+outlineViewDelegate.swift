@@ -25,7 +25,34 @@ extension HomeController: NSOutlineViewDelegate {
         }
         
         let cell = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("outlineColumnItem"), owner: self) as! NSTableCellView
-        cell.textField!.stringValue = item.title
+        var title = item.title
+        switch title{
+            //                    case "基幹教育セミナー":
+        //                        let i = 0
+        case "理系ディシプリン科目（必修①）":
+            title = "必修科目①"
+        case "理系ディシプリン科目（選択必修）":
+            fallthrough
+        case "専攻教育科目（選択必修）":
+            title = "選択必修科目"
+        case "理系ディシプリン科目（必修②）":
+            title = "必修科目②"
+        case "総合科目（フロンティア）":
+            title = "フロンティア科目"
+        case "総合科目（オープン）":
+            title = "オープン科目"
+        case "専攻教育科目（必修）":
+            title = "必修科目"
+        case "専攻教育科目（選択）":
+            title = "選択科目"
+        case "専攻教育科目（学部内自由）":
+            title = "学部内自由科目"
+        case "その他":
+            let i = 0
+        default:
+            let i = 0
+        }
+        cell.textField!.stringValue = title
         
         return cell
 
@@ -34,4 +61,5 @@ extension HomeController: NSOutlineViewDelegate {
 //    func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool {
 //        return true
 //    }
+    
 }

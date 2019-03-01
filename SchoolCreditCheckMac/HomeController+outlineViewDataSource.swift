@@ -44,10 +44,10 @@ extension HomeController: NSOutlineViewDataSource {
         return true
     }
     
-    func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
-        if let column = tableColumn, column.identifier.rawValue == "outlineColumn", let item = item as? Section {
-            return item.title
-        }
-        return nil
-    }
+//    func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
+//        if let column = tableColumn, column.identifier.rawValue == "outlineColumn", let item = item as? Section {
+//            return item.title
+//        }
+//        return nil
+//    }
 }
