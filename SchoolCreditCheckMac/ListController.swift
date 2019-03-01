@@ -103,7 +103,7 @@ class ListController: NSViewController {
 
 extension ListController: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return fireItems.count 
+        return fireItems.count
     }
 }
 
@@ -140,6 +140,19 @@ extension ListController: NSTableViewDelegate {
             return cell
         }
         return nil
+    }
+    
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        let subject = fireItems[tableView.selectedRow]
+        if let section = realmItems?.filter("title == %@", subject.section)[0] {
+            do {
+                try realm.write {
+                    section.subjects.append(subject)
+                }
+            } catch {
+                print("ERROR fire to realm")
+            }
+        }
     }
     
 }

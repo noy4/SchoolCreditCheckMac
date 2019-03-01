@@ -17,7 +17,12 @@ extension HomeController: NSOutlineViewDataSource {
         }
         
         if let item = item as? Section {
-            return item.sections.count
+            if item.sections.count != 0 {
+                return item.sections.count
+            } else {
+                return item.subjects.count
+            }
+            
         }
         
         return 0 // anything else
@@ -31,7 +36,12 @@ extension HomeController: NSOutlineViewDataSource {
         }
         
         if let item = item as? Section {
-            return item.sections[index]
+            if item.sections.count != 0 {
+                return item.sections[index]
+            } else {
+                return item.subjects[index]
+            }
+            
         }
         
         return "UNKNOWN" // if this returns, check your code!

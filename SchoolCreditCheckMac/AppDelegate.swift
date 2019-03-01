@@ -29,6 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let seedFilePath = Bundle.main.url(forResource: "seed", withExtension: "realm")
         let realmPath = seedFilePath?.deletingLastPathComponent().appendingPathComponent("1.realm")
         let copyPath = seedFilePath?.deletingLastPathComponent().appendingPathComponent("copy.realm")
+        print(realmPath)
         
         do {
 //            try FileManager.default.copyItem(at: seedFilePath!, to: realmPath!)
