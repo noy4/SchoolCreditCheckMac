@@ -17,5 +17,14 @@ class Section: Object {
     @objc dynamic var date = Date()
     
     let sections = List<Section>()
+    let subjects = List<Subject>()
     var parentSection = LinkingObjects(fromType: Section.self, property: "sections")
+}
+
+class Subject: Object {
+    @objc dynamic var title: String = ""
+    @objc dynamic var credit: Float = 0
+    @objc dynamic var date = Date()
+
+    var parentSection = LinkingObjects(fromType: Section.self, property: "subjects")
 }

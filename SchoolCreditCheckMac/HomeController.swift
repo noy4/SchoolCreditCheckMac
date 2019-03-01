@@ -16,21 +16,21 @@ class HomeController: NSViewController {
     @IBOutlet weak var textField: NSTextField!
     @IBOutlet weak var outlineView: NSOutlineView!
     
-//    var data: [Item] = TestData().items
     var data: Results<Section>?
     
-    let realm = try! Realm()
+//    let realm = try! Realm()
+    var realm: Realm!
     let creditArray = ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        outlineView.expandItem(nil, expandChildren: true)
+        
+        let realmPath = Bundle.main.url(forResource: "seed", withExtension: "realm")?.deletingLastPathComponent().appendingPathComponent("1.realm")
+        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 1)
+        realm = try! Realm(configuration: config)
         
         data = realm.objects(Section.self).sorted(byKeyPath: "date")
         outlineView.reloadData()
-        print(Realm.Configuration.defaultConfiguration.fileURL)
-        
         outlineView.expandItem(nil, expandChildren: true)
         
         creditComboBox.removeAllItems()
