@@ -18,7 +18,6 @@ class HomeController: NSViewController {
     
     var data: Results<Section>?
     
-//    let realm = try! Realm()
     var realm: Realm!
     let creditArray = ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0"]
     
@@ -46,22 +45,34 @@ class HomeController: NSViewController {
     }
 
     @IBAction func buttonPressed(_ sender: NSButton) {
-        let newSection = Section()
-        newSection.title = textField.stringValue
-        newSection.needCredit = creditComboBox.floatValue
+//        let newSection = Section()
+//        newSection.title = textField.stringValue
+//        newSection.needCredit = creditComboBox.floatValue
+//
+//        do {
+//            try realm.write {
+//                if let data = data {
+//                    data[parentPopUp.indexOfSelectedItem].sections.append(newSection)
+//                }
+//            }
+//        } catch {
+//            print("ERROR 1")
+//        }
+//
+//        parentPopUp.removeAllItems()
+//        parentPopUp.addItems(withTitles: parentTitles())
         
-        do {
-            try realm.write {
-                if let data = data {
-                    data[parentPopUp.indexOfSelectedItem].sections.append(newSection)
-                }
+        outlineView.beginUpdates()
+        if let item = outlineView.item(atRow: outlineView.selectedRow) {
+            if let item = item as? Subject {
+                
+                let parentItem = outlineView.parent(forItem: item)
+                let index = outlineView.childIndex(forItem: item)
+                outlineView.removeItems(at: IndexSet(integer: index), inParent: parentItem, withAnimation: .slideRight)
+                
             }
-        } catch {
-            print("ERROR 1")
         }
-        
-        parentPopUp.removeAllItems()
-        parentPopUp.addItems(withTitles: parentTitles())
+        outlineView.endUpdates()
     }
     
     func parentTitles() -> [String] {

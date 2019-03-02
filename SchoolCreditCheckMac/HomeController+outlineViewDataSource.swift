@@ -48,9 +48,10 @@ extension HomeController: NSOutlineViewDataSource {
     }
     
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-//        let item = item as! Item
-//        return item.isExpandable
         
+        if let item = item as? Subject {
+            return false
+        }
         return true
     }
     

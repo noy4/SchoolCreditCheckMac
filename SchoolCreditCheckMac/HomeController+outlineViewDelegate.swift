@@ -20,9 +20,6 @@ extension HomeController: NSOutlineViewDelegate {
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         
-//        guard let item = item as? Section else {
-//            return nil
-//        }
         var title = ""
         if let item = item as? Section {
             
