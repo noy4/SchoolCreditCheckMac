@@ -29,11 +29,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let seedFilePath = Bundle.main.url(forResource: "seed", withExtension: "realm")
         let realmPath = seedFilePath?.deletingLastPathComponent().appendingPathComponent("1.realm")
         let copyPath = seedFilePath?.deletingLastPathComponent().appendingPathComponent("copy.realm")
-//        print(realmPath)
+        print(realmPath)
         
         do {
 //            try FileManager.default.copyItem(at: seedFilePath!, to: realmPath!)
-            let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 1)
+            let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 2)
             let realm = try Realm(configuration: config)
 //            try realm.writeCopy(toFile: copyPath!)
         } catch {

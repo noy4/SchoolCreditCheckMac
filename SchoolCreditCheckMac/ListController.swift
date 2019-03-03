@@ -19,13 +19,15 @@ class ListController: NSViewController {
     
     var realm: Realm!
     var realmItems: Results<Section>?
-    var sectionItems: Results<Section>?
+//    var sectionItems: Results<Section>?
+    var subjectItems: Results<Subject>?
     var fireItems: [Subject] = []
     let creditArray = ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0"]
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
+        loadSubjectItems()
         loadSubjects()
     }
     
@@ -33,7 +35,7 @@ class ListController: NSViewController {
         super.viewDidLoad()
         
         let realmPath = Bundle.main.url(forResource: "seed", withExtension: "realm")?.deletingLastPathComponent().appendingPathComponent("1.realm")
-        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 1)
+        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 2)
         realm = try! Realm(configuration: config)
         
         realmItems = realm.objects(Section.self).sorted(byKeyPath: "date")
@@ -57,7 +59,11 @@ class ListController: NSViewController {
 //                print("Subject saved")
 //            }
 //        }
-        tableView.reloadData()
+        
+//        tableView.beginUpdates()
+//        tableView.reloadData(forRowIndexes: tableView.selectedRowIndexes, columnIndexes: tableView.selectedColumnIndexes)
+////        tableView.deselectAll(<#T##sender: Any?##Any?#>)
+//        tableView.endUpdates()
         
     }
     
@@ -98,6 +104,28 @@ class ListController: NSViewController {
         
     }
     
+    func loadSubjectItems(){
+        subjectItems = realm.objects(Subject.self).sorted(byKeyPath: "date")
+    }
+    
+    @IBAction func tableViewClicked(_ sender: NSTableView) {
+        let subject = fireItems[sender.clickedRow]
+        if let section = realmItems?.filter("title == %@", subject.section)[0] {
+            if section.subjects.filter("title == %@", subject.title).count == 0 {
+                do {
+                    try realm.write {
+                        section.subjects.append(subject)
+                    }
+                } catch {
+                    print("ERROR fire to realm")
+                }
+            }
+        }
+        
+        loadSubjectItems()
+        sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
+        sender.deselectRow(sender.clickedRow)
+    }
     
 }
 
@@ -118,14 +146,14 @@ extension ListController: NSTableViewDelegate {
         
         var text: String = ""
         var cellIdentifier: String = ""
+        let bgColor1 = NSColor.systemBlue
+        let bgColor2 = NSColor.controlBackgroundColor
+        let textColor1 = NSColor.alternateSelectedControlTextColor
+        let textColor2 = NSColor.controlTextColor
         
-        // 1
-//        guard let item = fireItems?[row] else {
-//            return nil
-//        }
         let item = fireItems[row]
+        let rowView = tableView.rowView(atRow: row, makeIfNecessary: false)
         
-        // 2
         if tableColumn == tableView.tableColumns[0] {
             text = item.title
             cellIdentifier = CellIdentifiers.TitleCell
@@ -134,25 +162,38 @@ extension ListController: NSTableViewDelegate {
             cellIdentifier = CellIdentifiers.CreditCell
         }
         
-        // 3
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
             cell.textField?.stringValue = text
+            if subjectItems?.filter("title == %@", item.title).count != 0 {
+                rowView?.backgroundColor = bgColor1
+                cell.textField?.textColor = textColor1
+            } else {
+                rowView?.backgroundColor = bgColor2
+                cell.textField?.textColor = textColor2
+            }
             return cell
         }
         return nil
     }
     
-    func tableViewSelectionDidChange(_ notification: Notification) {
-        let subject = fireItems[tableView.selectedRow]
-        if let section = realmItems?.filter("title == %@", subject.section)[0] {
-            do {
-                try realm.write {
-                    section.subjects.append(subject)
-                }
-            } catch {
-                print("ERROR fire to realm")
-            }
-        }
-    }
+//    func tableViewSelectionDidChange(_ notification: Notification) {
+//        let subject = fireItems[tableView.selectedRow]
+//        if let section = realmItems?.filter("title == %@", subject.section)[0] {
+//            if section.subjects.filter("title == %@", subject.title).count == 0 {
+//                do {
+//                    try realm.write {
+//                        section.subjects.append(subject)
+//                    }
+//                } catch {
+//                    print("ERROR fire to realm")
+//                }
+//            }
+//        }
+//
+//        loadSubjectItems()
+//        tableView.reloadData()
+//    }
+    
+    
     
 }

@@ -15,6 +15,7 @@
 		45788C7F22279358001A59A4 /* HomeController+outlineViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45788C7E22279358001A59A4 /* HomeController+outlineViewDataSource.swift */; };
 		45788CD6222903BF001A59A4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45788CD5222903BF001A59A4 /* GoogleService-Info.plist */; };
 		45788CD822294082001A59A4 /* seed.realm in Resources */ = {isa = PBXBuildFile; fileRef = 45788CD722294082001A59A4 /* seed.realm */; };
+		45788CDA222BEBC3001A59A4 /* CustomTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45788CD9222BEBC3001A59A4 /* CustomTableCellView.swift */; };
 		45D06CE421E851120015479E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D06CE321E851120015479E /* AppDelegate.swift */; };
 		45D06CE621E851120015479E /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D06CE521E851120015479E /* HomeController.swift */; };
 		45D06CE821E851140015479E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45D06CE721E851140015479E /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 		45788C7E22279358001A59A4 /* HomeController+outlineViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeController+outlineViewDataSource.swift"; sourceTree = "<group>"; };
 		45788CD5222903BF001A59A4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45788CD722294082001A59A4 /* seed.realm */ = {isa = PBXFileReference; lastKnownFileType = file; path = seed.realm; sourceTree = "<group>"; };
+		45788CD9222BEBC3001A59A4 /* CustomTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableCellView.swift; sourceTree = "<group>"; };
 		45D06CE021E851120015479E /* SchoolCreditCheckMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolCreditCheckMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45D06CE321E851120015479E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		45D06CE521E851120015479E /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				45788C7822277AEE001A59A4 /* Item.swift */,
 				45D06CE721E851140015479E /* Assets.xcassets */,
 				45D06CE921E851140015479E /* Main.storyboard */,
+				45788CD9222BEBC3001A59A4 /* CustomTableCellView.swift */,
 				45788CD722294082001A59A4 /* seed.realm */,
 				45D06CEC21E851140015479E /* Info.plist */,
 				45788CD5222903BF001A59A4 /* GoogleService-Info.plist */,
@@ -239,6 +242,7 @@
 			files = (
 				45788C7922277AEE001A59A4 /* Item.swift in Sources */,
 				45D06CE621E851120015479E /* HomeController.swift in Sources */,
+				45788CDA222BEBC3001A59A4 /* CustomTableCellView.swift in Sources */,
 				45D06CE421E851120015479E /* AppDelegate.swift in Sources */,
 				45788C7F22279358001A59A4 /* HomeController+outlineViewDataSource.swift in Sources */,
 				45788C7D22278FF1001A59A4 /* HomeController+outlineViewDelegate.swift in Sources */,

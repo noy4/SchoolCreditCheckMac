@@ -25,6 +25,7 @@ class Subject: Object {
     @objc dynamic var title: String = ""
     var section: String = ""
     @objc dynamic var credit: Float = 0
+    @objc dynamic var done: Bool = false 
     @objc dynamic var date = Date()
 
     var parentSection = LinkingObjects(fromType: Section.self, property: "subjects")
