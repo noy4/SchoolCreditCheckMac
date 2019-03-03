@@ -72,6 +72,49 @@ extension HomeController: NSOutlineViewDelegate {
                 print("Error saving credit status")
             }
             
+            if willCredit > needCredit {
+                let over = willCredit - needCredit
+                let other = data?.filter("title == 'その他'")[0]
+                let otherSubjects = other?.subjects.filter("title == %@", item.title)
+                if otherSubjects?.count != 0 {
+                    do {
+                        try realm.write {
+                            otherSubjects![0].credit = over
+                        }
+                    } catch {
+                        print("Error saving otherSubject")
+                    }
+                }
+                else if item.title != "その他" {
+                    let otherSubject = Subject()
+                    otherSubject.title = item.title
+                    otherSubject.section = "その他"
+                    otherSubject.credit = over
+                    otherSubject.done = true
+
+                    do {
+                        try realm.write {
+                            other?.subjects.append(otherSubject)
+                        }
+                    } catch {
+                        print("Error saving otherSubject")
+                    }
+                }
+                
+            }
+            else {
+                let otherSubjects = data?.filter("title == 'その他'")[0].subjects.filter("title == %@", item.title)
+                if otherSubjects?.count != 0 {
+                    do {
+                        try realm.write {
+                            realm.delete(otherSubjects![0])
+                        }
+                    } catch {
+                        print("Error deleting otherSubject")
+                    }
+                }
+            }
+            
             creditStatusHidden = false
             
             
