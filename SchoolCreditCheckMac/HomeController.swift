@@ -25,7 +25,7 @@ class HomeController: NSViewController {
         super.viewDidLoad()
         
         let realmPath = Bundle.main.url(forResource: "seed", withExtension: "realm")?.deletingLastPathComponent().appendingPathComponent("1.realm")
-        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 2)
+        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 3)
         realm = try! Realm(configuration: config)
         
         data = realm.objects(Section.self).sorted(byKeyPath: "date")
@@ -66,6 +66,12 @@ class HomeController: NSViewController {
         outlineView.expandItem(nil, expandChildren: true)
     }
     
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destinationController as! ListController
+        destinationVC.outlineView = outlineView
+        destinationVC.data = data
+    }
+    
     func parentTitles() -> [String] {
         var titles = [String]()
         if let data = data {
@@ -85,47 +91,40 @@ class HomeController: NSViewController {
         let selectedRows = outlineView.selectedRowIndexes.sorted(by: >)
         for selectedRow in selectedRows {
             
-            outlineView.beginUpdates()
-            if let item = outlineView.item(atRow: selectedRow) {
-                if let item = item as? Subject {
-                    do {
-                        try realm.write {
-                            realm.delete(item)
-                        }
-                    } catch {
-                        print("Error deleting")
+            var item = outlineView.item(atRow: selectedRow)
+            if let subject = item as? Subject {
+                do {
+                    try realm.write {
+                        realm.delete(subject)
                     }
-                    
-                    let parentItem = outlineView.parent(forItem: item)
-                    let index = outlineView.childIndex(forItem: item)
-                    outlineView.removeItems(at: IndexSet(integer: index), inParent: parentItem, withAnimation: .slideRight)
-                    
+                } catch {
+                    print("Error deleting")
                 }
+                
+                var i = 0
+                while true {
+                    item = outlineView.parent(forItem: item)
+                    if item == nil {
+                        break
+                    }
+                    i = outlineView.row(forItem: item)
+                    outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
+                }
+                
+                let parentItem = outlineView.parent(forItem: subject)
+                let index = outlineView.childIndex(forItem: subject)
+                outlineView.removeItems(at: IndexSet(integer: index), inParent: parentItem, withAnimation: .slideRight)
+                
+                
             }
-            outlineView.endUpdates()
+            
         }
         
     }
     
-    @IBAction func outlineViewClicked(_ sender: NSOutlineView) {
-//        let item = outlineView.item(atRow: sender.clickedRow)
-//        let parentItem = sender.parent(forItem: item)
-//        if let subject = item as? Subject {
-//            do {
-//                try realm.write {
-//                    subject.done = !subject.done
-//                }
-//            } catch {
-//                print("Error change done status")
-//            }
-//        }
-////        outlineView.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integer: 0))
-//        sender.reloadItem(parentItem, reloadChildren: true)
-    }
-    
     @IBAction func checkBoxClicked(_ sender: NSButton) {
         let row = outlineView.row(for: sender.superview!)
-        let item = outlineView.item(atRow: row)
+        var item = outlineView.item(atRow: row)
         let parentItem = outlineView.parent(forItem: item)
         if let subject = item as? Subject {
             do {
@@ -155,8 +154,19 @@ class HomeController: NSViewController {
 //        outlineView.reloadData()
 //        outlineView.expandItem(nil, expandChildren: true)
         
-        for i in (0...row).reversed() {
+//        for i in (0...row).reversed() {
+//            outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
+//        }
+        
+        var i = row
+        while true {
             outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
+            item = outlineView.parent(forItem: item)
+            if item == nil {
+                break
+            }
+            i = outlineView.row(forItem: item)
+            
         }
         
     }

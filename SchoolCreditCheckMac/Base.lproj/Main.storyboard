@@ -809,7 +809,6 @@
                                                             </tableColumn>
                                                         </tableColumns>
                                                         <connections>
-                                                            <action selector="outlineViewClicked:" target="XfG-lQ-9wD" id="sfM-jp-Xqu"/>
                                                             <outlet property="dataSource" destination="XfG-lQ-9wD" id="qA1-4r-3k2"/>
                                                             <outlet property="delegate" destination="XfG-lQ-9wD" id="uzy-tl-24u"/>
                                                         </connections>
@@ -927,7 +926,7 @@
                                                 <rect key="frame" x="1" y="0.0" width="290" height="134"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ehg-0K-3NJ" viewBased="YES" id="zqZ-vX-MfA">
+                                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ehg-0K-3NJ" viewBased="YES" id="zqZ-vX-MfA">
                                                         <rect key="frame" x="0.0" y="0.0" width="290" height="111"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
