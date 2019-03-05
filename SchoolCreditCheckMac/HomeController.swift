@@ -25,7 +25,7 @@ class HomeController: NSViewController {
         super.viewDidLoad()
         
         let realmPath = Bundle.main.url(forResource: "seed", withExtension: "realm")?.deletingLastPathComponent().appendingPathComponent("1.realm")
-        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 3)
+        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 4)
         realm = try! Realm(configuration: config)
         
         data = realm.objects(Section.self).sorted(byKeyPath: "date")
@@ -64,12 +64,9 @@ class HomeController: NSViewController {
         
         outlineView.reloadData()
         outlineView.expandItem(nil, expandChildren: true)
-    }
-    
-    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        let destinationVC = segue.destinationController as! ListController
-        destinationVC.outlineView = outlineView
-        destinationVC.data = data
+        for i in (0...outlineView.numberOfRows - 1).reversed() {
+            outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
+        }
     }
     
     func parentTitles() -> [String] {
@@ -89,8 +86,9 @@ class HomeController: NSViewController {
     override func deleteBackward(_ sender: Any?) {
         
         let selectedRows = outlineView.selectedRowIndexes.sorted(by: >)
-        for selectedRow in selectedRows {
-            
+        var iArray: [Int] = []
+        for j in 0..<selectedRows.count {
+            let selectedRow = selectedRows[j]
             var item = outlineView.item(atRow: selectedRow)
             if let subject = item as? Subject {
                 do {
@@ -108,7 +106,16 @@ class HomeController: NSViewController {
                         break
                     }
                     i = outlineView.row(forItem: item)
-                    outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
+                    iArray.append(i)
+                }
+                
+                if j == selectedRows.count - 1 {
+                    let orderedI = NSOrderedSet(array: iArray)
+                    let orderedIArray = (orderedI.array as! [Int]).sorted(by: >)
+                    for k in orderedIArray {
+                        
+                        outlineView.reloadData(forRowIndexes: IndexSet(integer: k), columnIndexes: IndexSet(integer: 0))
+                    }
                 }
                 
                 let parentItem = outlineView.parent(forItem: subject)

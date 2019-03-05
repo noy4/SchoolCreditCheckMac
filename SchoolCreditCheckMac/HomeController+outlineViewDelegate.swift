@@ -147,19 +147,18 @@ extension HomeController: NSOutlineViewDelegate {
 
     }
     
-    func outlineView(_ outlineView: NSOutlineView, didAdd rowView: NSTableRowView, forRow row: Int) {
-
-        let item = outlineView.item(atRow: row)
-        if let section = item as? Section {
-            do {
-                try realm.write {
-                    section.row = row
-                }
-            } catch {
-                print("Error saving row")
-            }
-        }
-    }
+//    func outlineView(_ outlineView: NSOutlineView, didAdd rowView: NSTableRowView, forRow row: Int) {
+//
+//        var bgColor = NSColor.controlBackgroundColor
+//
+//        let item = outlineView.item(atRow: row)
+//        if let subject = item as? Subject {
+//            if subject.done {
+//                bgColor = NSColor.systemOrange
+//            }
+//        }
+//        rowView.backgroundColor = bgColor
+//    }
     
 //    func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool {
 //        return true

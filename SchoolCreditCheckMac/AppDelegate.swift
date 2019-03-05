@@ -33,7 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         do {
 //            try FileManager.default.copyItem(at: seedFilePath!, to: realmPath!)
-            let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 3)
+            let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 4)
             let realm = try Realm(configuration: config)
 //            try realm.writeCopy(toFile: copyPath!)
         } catch {

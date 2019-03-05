@@ -15,7 +15,6 @@ class Section: Object {
     @objc dynamic var willCredit: Float = 0
     @objc dynamic var nowCredit: Float = 0
     @objc dynamic var date = Date()
-    @objc dynamic var row: Int = 0
     
     let sections = List<Section>()
     let subjects = List<Subject>()

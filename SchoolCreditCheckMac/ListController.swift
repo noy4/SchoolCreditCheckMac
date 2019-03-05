@@ -24,9 +24,6 @@ class ListController: NSViewController {
     var fireItems: [Subject] = []
     let creditArray = ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0"]
     
-    var outlineView: NSOutlineView?
-    var data: Results<Section>?
-    
     override func viewWillAppear() {
         super.viewWillAppear()
         
@@ -38,7 +35,7 @@ class ListController: NSViewController {
         super.viewDidLoad()
         
         let realmPath = Bundle.main.url(forResource: "seed", withExtension: "realm")?.deletingLastPathComponent().appendingPathComponent("1.realm")
-        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 3)
+        let config = Realm.Configuration(fileURL: realmPath, schemaVersion: 4)
         realm = try! Realm(configuration: config)
         
         realmItems = realm.objects(Section.self).sorted(byKeyPath: "date")
@@ -123,7 +120,7 @@ class ListController: NSViewController {
     
     @IBAction func tableViewClicked(_ sender: NSTableView) {
         let subject = fireItems[sender.clickedRow]
-        if let section = data?.filter("title == %@", subject.section)[0] {
+        if let section = realmItems?.filter("title == %@", subject.section)[0] {
             if section.subjects.filter("title == %@", subject.title).count == 0 {
                 do {
                     try realm.write {
@@ -132,22 +129,11 @@ class ListController: NSViewController {
                 } catch {
                     print("ERROR fire to realm")
                 }
-                
-                loadSubjectItems()
-                sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
-                
-                let index = IndexSet(integer: section.subjects.count - 1)
-                let parentItem = outlineView?.item(atRow: section.row)
-                outlineView?.insertItems(at: index, inParent: parentItem, withAnimation: .slideDown)
             }
         }
         
-        
-//        let parentItem = outlineView?.parent(forItem: subject)
-//        print(parentItem)
-//        let index = IndexSet(integer: ((parentItem as? Section)?.subjects.count)!)
-//        outlineView?.insertItems(at: index, inParent: parentItem, withAnimation: .effectGap)
-        
+        loadSubjectItems()
+        sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
     }
     
 }
