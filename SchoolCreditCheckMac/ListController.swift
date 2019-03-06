@@ -119,8 +119,11 @@ class ListController: NSViewController {
     }
     
     @IBAction func tableViewClicked(_ sender: NSTableView) {
+        if sender.clickedRow == -1 {
+            return
+        }
         let subject = fireItems[sender.clickedRow]
-        if let section = realmItems?.filter("title == %@", subject.section)[0] {
+        if var section = realmItems?.filter("title == %@", subject.section)[0] {
             if section.subjects.filter("title == %@", subject.title).count == 0 {
                 do {
                     try realm.write {
@@ -129,11 +132,40 @@ class ListController: NSViewController {
                 } catch {
                     print("ERROR fire to realm")
                 }
+                
+                loadSubjectItems()
+                sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
+                
+                
+//                var will: Float = 0
+//                var now: Float = 0
+//                do {
+//                    try realm.write {
+//                        while true {
+//                            if section.subjects.count != 0 {
+//                                will = section.subjects.sum(ofProperty: "credit")
+//                                section.willCredit = will
+//                                now = section.subjects.filter("done == true").sum(ofProperty: "credit")
+//                                section.nowCredit = now
+//                            } else {
+//                                will = section.sections.sum(ofProperty: "willCredit")
+//                                section.willCredit = will
+//                                now = section.sections.sum(ofProperty: "nowCredit")
+//                                section.nowCredit = now
+//                            }
+//
+//                            if section.parentSection.count == 0 {
+//                                break
+//                            }
+//                            section = section.parentSection[0]
+//                        }
+//
+//                    }
+//                } catch {
+//                    print("Error reloading all credit status")
+//                }
             }
         }
-        
-        loadSubjectItems()
-        sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
     }
     
 }

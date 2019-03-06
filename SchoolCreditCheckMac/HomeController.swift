@@ -132,48 +132,52 @@ class HomeController: NSViewController {
     @IBAction func checkBoxClicked(_ sender: NSButton) {
         let row = outlineView.row(for: sender.superview!)
         var item = outlineView.item(atRow: row)
-        let parentItem = outlineView.parent(forItem: item)
-        if let subject = item as? Subject {
-            do {
-                try realm.write {
-                    subject.done = !subject.done
-                }
-            } catch {
-                print("Error change done status")
+//        let parentItem = outlineView.parent(forItem: item)
+        guard let subject = item as? Subject else {fatalError()}
+        do {
+            try realm.write {
+                subject.done = !subject.done
             }
-            
-            
-            
+        } catch {
+            print("Error change done status")
         }
         
-        let childIndex = IndexSet(integer: outlineView.childIndex(forItem: item))
-        let parentIndex = IndexSet(integer: outlineView.childIndex(forItem: parentItem))
-        let parent2Item = outlineView.parent(forItem: parentItem)
-//        outlineView.removeItems(at: childIndex, inParent: parentItem, withAnimation: .effectFade)
-//        outlineView.insertItems(at: childIndex, inParent: parentItem, withAnimation: .effectFade)
-//        outlineView.expandItem(parent2Item, expandChildren: true)
-        
-//        outlineView.reloadItem(parent2Item, reloadChildren: true)
-//        for i in 0...5 {
-//            outlineView.reloadData()
-//        }
-//        outlineView.expandItem(parent2Item, expandChildren: true)
-//        outlineView.reloadData()
-//        outlineView.expandItem(nil, expandChildren: true)
-        
-//        for i in (0...row).reversed() {
-//            outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
-//        }
-        
         var i = row
+        outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
+        item = outlineView.parent(forItem: item)
+        i = outlineView.row(forItem: item)
+        
+        var section = subject.parentSection[0]
         while true {
+            section.reloadCreditStatus(realm: realm)
             outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
-            item = outlineView.parent(forItem: item)
-            if item == nil {
+            if section.parentSection.count == 0 {
                 break
             }
+            section = section.parentSection[0]
+            item = outlineView.parent(forItem: item)
             i = outlineView.row(forItem: item)
-            
+        }
+        
+        for j in 0..<outlineView.numberOfRows {
+            if let anItem = outlineView.item(atRow: j) as? Section {
+                if anItem.title == "その他" {
+//                    outlineView.reloadItem(anItem, reloadChildren: true)
+                    for k in 1...anItem.subjects.count {
+                        let otherRowNum = j + k
+                        if let anSubject = outlineView.item(atRow: otherRowNum) as? Subject {
+                            section = subject.parentSection[0]
+                            if anSubject.title == section.title {
+                                anItem.reloadCreditStatus(realm: realm)
+                                outlineView.reloadData(forRowIndexes: IndexSet(integer: otherRowNum), columnIndexes: IndexSet(integer: 0))
+                                outlineView.reloadData(forRowIndexes: IndexSet(integer: j), columnIndexes: IndexSet(integer: 0))
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            }
         }
         
     }
