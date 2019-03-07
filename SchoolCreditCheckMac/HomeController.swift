@@ -69,6 +69,11 @@ class HomeController: NSViewController {
         }
     }
     
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        let listVC = segue.destinationController as! ListController
+        listVC.outlineView = outlineView
+    }
+    
     func parentTitles() -> [String] {
         var titles = [String]()
         if let data = data {
@@ -116,7 +121,13 @@ class HomeController: NSViewController {
                     let orderedIArray = (orderedI.array as! [Int]).sorted(by: >)
                     for k in orderedIArray {
                         if let section = outlineView.item(atRow: k) as? Section {
-                            section.reloadCreditStatus(realm: realm)
+                            do {
+                                try realm.write {
+                                    section.reloadCreditStatus(realm: realm)
+                                }
+                            } catch {
+                                print("Error reload credit in delete")
+                            }
                             outlineView.reloadData(forRowIndexes: IndexSet(integer: k), columnIndexes: IndexSet(integer: 0))
                             
                         }
@@ -160,7 +171,13 @@ class HomeController: NSViewController {
         
         var section = subject.parentSection[0]
         while true {
-            section.reloadCreditStatus(realm: realm)
+            do {
+                try realm.write {
+                    section.reloadCreditStatus(realm: realm)
+                }
+            } catch {
+                print("Error reload credit in checkbox")
+            }
             outlineView.reloadData(forRowIndexes: IndexSet(integer: i), columnIndexes: IndexSet(integer: 0))
             if section.parentSection.count == 0 {
                 break
@@ -179,7 +196,7 @@ class HomeController: NSViewController {
             let item = outlineView.item(atRow: j)
             if let anItem = item as? Section {
                 if anItem.title == "その他" {
-                    anItem.reloadCreditStatus(realm: realm)
+//                    anItem.reloadCreditStatus(realm: realm)
                     outlineView.reloadItem(item, reloadChildren: true)
                     outlineView.reloadData(forRowIndexes: IndexSet(integer: j), columnIndexes: IndexSet(integer: 0))
                 }

@@ -19,10 +19,11 @@ class ListController: NSViewController {
     
     var realm: Realm!
     var realmItems: Results<Section>?
-//    var sectionItems: Results<Section>?
     var subjectItems: Results<Subject>?
     var fireItems: [Subject] = []
     let creditArray = ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0"]
+    
+    var outlineView: NSOutlineView?
     
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -44,6 +45,13 @@ class ListController: NSViewController {
         parentPopUp.addItems(withTitles: parentTitles())
         creditConboBox.removeAllItems()
         creditConboBox.addItems(withObjectValues: creditArray)
+    }
+    
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        
+        outlineView?.reloadData()
+        outlineView?.expandItem(nil, expandChildren: true)
     }
 
     @IBAction func buttonPressed(_ sender: NSButton) {
@@ -128,50 +136,19 @@ class ListController: NSViewController {
                 do {
                     try realm.write {
                         section.subjects.append(subject)
+                        sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
+                        while true {
+                            section.reloadCreditStatus(realm: realm)
+                            if section.parentSection.count == 0 {
+                                break
+                            }
+                            section = section.parentSection[0]
+                        }
                     }
                 } catch {
                     print("ERROR fire to realm")
                 }
                 
-                loadSubjectItems()
-                while true {
-                    section.reloadCreditStatus(realm: realm)
-                    if section.parentSection.count == 0 {
-                        break
-                    }
-                    section = section.parentSection[0]
-                }
-
-                sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
-                
-                
-//                var will: Float = 0
-//                var now: Float = 0
-//                do {
-//                    try realm.write {
-//                        while true {
-//                            if section.subjects.count != 0 {
-//                                will = section.subjects.sum(ofProperty: "credit")
-//                                section.willCredit = will
-//                                now = section.subjects.filter("done == true").sum(ofProperty: "credit")
-//                                section.nowCredit = now
-//                            } else {
-//                                will = section.sections.sum(ofProperty: "willCredit")
-//                                section.willCredit = will
-//                                now = section.sections.sum(ofProperty: "nowCredit")
-//                                section.nowCredit = now
-//                            }
-//
-//                            if section.parentSection.count == 0 {
-//                                break
-//                            }
-//                            section = section.parentSection[0]
-//                        }
-//
-//                    }
-//                } catch {
-//                    print("Error reloading all credit status")
-//                }
             }
         }
     }

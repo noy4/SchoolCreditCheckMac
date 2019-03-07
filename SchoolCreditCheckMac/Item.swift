@@ -21,8 +21,8 @@ class Section: Object {
     var parentSection = LinkingObjects(fromType: Section.self, property: "sections")
     
     func reloadCreditStatus(realm: Realm){
-        do {
-            try realm.write {
+//        do {
+//            try realm.write {
                 if sections.count == 0 {
                     willCredit = subjects.sum(ofProperty: "credit")
                     nowCredit = subjects.filter("done == true").sum(ofProperty: "credit")
@@ -34,6 +34,7 @@ class Section: Object {
                         if otherSubjects.count != 0 {
                         otherSubjects[0].credit = over
                         otherSubjects[0].done = (nowCredit == willCredit)
+                            other.reloadCreditStatus(realm: realm)
                         }
                         else if title != "その他" {
                             let otherSubject = Subject()
@@ -46,9 +47,11 @@ class Section: Object {
                         
                     }
                     else {
-                        let otherSubjects = realm.objects(Section.self).filter("title == 'その他'")[0].subjects.filter("title == %@", title)
+                        let other = realm.objects(Section.self).filter("title == 'その他'")[0]
+                        let otherSubjects = other.subjects.filter("title == %@", title)
                         if otherSubjects.count != 0 {
                             realm.delete(otherSubjects[0])
+                            other.reloadCreditStatus(realm: realm)
                         }
                     }
                 } else {
@@ -58,10 +61,10 @@ class Section: Object {
 
                 
 
-            }
-        } catch {
-            print("Error reloading all credit status")
-        }
+//            }
+//        } catch {
+//            print("Error reloading all credit status")
+//        }
     }
 }
 
