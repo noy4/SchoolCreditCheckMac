@@ -134,6 +134,14 @@ class ListController: NSViewController {
                 }
                 
                 loadSubjectItems()
+                while true {
+                    section.reloadCreditStatus(realm: realm)
+                    if section.parentSection.count == 0 {
+                        break
+                    }
+                    section = section.parentSection[0]
+                }
+
                 sender.reloadData(forRowIndexes: IndexSet(integer: sender.clickedRow), columnIndexes: IndexSet(integersIn: 0...1))
                 
                 

@@ -86,11 +86,13 @@ class HomeController: NSViewController {
     override func deleteBackward(_ sender: Any?) {
         
         let selectedRows = outlineView.selectedRowIndexes.sorted(by: >)
-        var iArray: [Int] = []
+        var sectionRows: [Int] = []
+        var subjectRows: [Int] = []
         for j in 0..<selectedRows.count {
             let selectedRow = selectedRows[j]
             var item = outlineView.item(atRow: selectedRow)
             if let subject = item as? Subject {
+                subjectRows.append(selectedRow)
                 do {
                     try realm.write {
                         realm.delete(subject)
@@ -106,21 +108,31 @@ class HomeController: NSViewController {
                         break
                     }
                     i = outlineView.row(forItem: item)
-                    iArray.append(i)
+                    sectionRows.append(i)
                 }
                 
                 if j == selectedRows.count - 1 {
-                    let orderedI = NSOrderedSet(array: iArray)
+                    let orderedI = NSOrderedSet(array: sectionRows)
                     let orderedIArray = (orderedI.array as! [Int]).sorted(by: >)
                     for k in orderedIArray {
-                        
-                        outlineView.reloadData(forRowIndexes: IndexSet(integer: k), columnIndexes: IndexSet(integer: 0))
+                        if let section = outlineView.item(atRow: k) as? Section {
+                            section.reloadCreditStatus(realm: realm)
+                            outlineView.reloadData(forRowIndexes: IndexSet(integer: k), columnIndexes: IndexSet(integer: 0))
+                            
+                        }
                     }
+                    subjectRows.sort(by: >)
+                    for l in subjectRows {
+                        item = outlineView.item(atRow: l)
+                        let parentItem = outlineView.parent(forItem: item)
+                        let index = outlineView.childIndex(forItem: item)
+                        outlineView.removeItems(at: IndexSet(integer: index), inParent: parentItem, withAnimation: .slideRight)
+                        
+                    }
+                    
+                    reloadOther()
+                    
                 }
-                
-                let parentItem = outlineView.parent(forItem: subject)
-                let index = outlineView.childIndex(forItem: subject)
-                outlineView.removeItems(at: IndexSet(integer: index), inParent: parentItem, withAnimation: .slideRight)
                 
                 
             }
@@ -132,7 +144,6 @@ class HomeController: NSViewController {
     @IBAction func checkBoxClicked(_ sender: NSButton) {
         let row = outlineView.row(for: sender.superview!)
         var item = outlineView.item(atRow: row)
-//        let parentItem = outlineView.parent(forItem: item)
         guard let subject = item as? Subject else {fatalError()}
         do {
             try realm.write {
@@ -158,30 +169,23 @@ class HomeController: NSViewController {
             item = outlineView.parent(forItem: item)
             i = outlineView.row(forItem: item)
         }
-        
-        for j in 0..<outlineView.numberOfRows {
-            if let anItem = outlineView.item(atRow: j) as? Section {
-                if anItem.title == "その他" {
-//                    outlineView.reloadItem(anItem, reloadChildren: true)
-                    for k in 1...anItem.subjects.count {
-                        let otherRowNum = j + k
-                        if let anSubject = outlineView.item(atRow: otherRowNum) as? Subject {
-                            section = subject.parentSection[0]
-                            if anSubject.title == section.title {
-                                anItem.reloadCreditStatus(realm: realm)
-                                outlineView.reloadData(forRowIndexes: IndexSet(integer: otherRowNum), columnIndexes: IndexSet(integer: 0))
-                                outlineView.reloadData(forRowIndexes: IndexSet(integer: j), columnIndexes: IndexSet(integer: 0))
-                            }
-                        }
-                    }
-                    
-                    
-                }
-            }
-        }
+        section = subject.parentSection[0]
+        reloadOther()
         
     }
     
+    func reloadOther() {
+        for j in 0..<outlineView.numberOfRows {
+            let item = outlineView.item(atRow: j)
+            if let anItem = item as? Section {
+                if anItem.title == "その他" {
+                    anItem.reloadCreditStatus(realm: realm)
+                    outlineView.reloadItem(item, reloadChildren: true)
+                    outlineView.reloadData(forRowIndexes: IndexSet(integer: j), columnIndexes: IndexSet(integer: 0))
+                }
+            }
+        }
+    }
     
     
 }
