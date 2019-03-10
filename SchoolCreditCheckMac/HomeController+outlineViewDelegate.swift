@@ -57,66 +57,6 @@ extension HomeController: NSOutlineViewDelegate {
             needCredit = item.needCredit
             willCredit = item.willCredit
             nowCredit = item.nowCredit
-//            if item.subjects.count == 0 {
-//                willCredit = item.sections.filter("title != 'その他'").sum(ofProperty: "willCredit")
-//                nowCredit = item.sections.filter("title != 'その他'").sum(ofProperty: "nowCredit")
-//            } else {
-//                willCredit = item.subjects.sum(ofProperty: "credit")
-//                nowCredit = item.subjects.filter("done == true").sum(ofProperty: "credit")
-//            }
-//
-//            do {
-//                try realm.write {
-//                    item.willCredit = willCredit
-//                    item.nowCredit = nowCredit
-//                }
-//            } catch {
-//                print("Error saving credit status")
-//            }
-//
-//            if willCredit > needCredit {
-//                let over = willCredit - needCredit
-//                let other = data?.filter("title == 'その他'")[0]
-//                let otherSubjects = other?.subjects.filter("title == %@", item.title)
-//                if otherSubjects?.count != 0 {
-//                    do {
-//                        try realm.write {
-//                            otherSubjects![0].credit = over
-//                            otherSubjects![0].done = (nowCredit == willCredit)
-//                        }
-//                    } catch {
-//                        print("Error saving otherSubject")
-//                    }
-//                }
-//                else if item.title != "その他" {
-//                    let otherSubject = Subject()
-//                    otherSubject.title = item.title
-//                    otherSubject.section = "その他"
-//                    otherSubject.credit = over
-//                    otherSubject.done = (nowCredit == willCredit)
-//
-//                    do {
-//                        try realm.write {
-//                            other?.subjects.append(otherSubject)
-//                        }
-//                    } catch {
-//                        print("Error saving otherSubject")
-//                    }
-//                }
-//
-//            }
-//            else {
-//                let otherSubjects = data?.filter("title == 'その他'")[0].subjects.filter("title == %@", item.title)
-//                if otherSubjects?.count != 0 {
-//                    do {
-//                        try realm.write {
-//                            realm.delete(otherSubjects![0])
-//                        }
-//                    } catch {
-//                        print("Error deleting otherSubject")
-//                    }
-//                }
-//            }
             
             creditStatusHidden = false
             if nowCredit == willCredit && willCredit >= needCredit {
@@ -139,7 +79,6 @@ extension HomeController: NSOutlineViewDelegate {
         cell.checkBox.title = String(credit)
         cell.checkBox.isHidden = checkHidden
         cell.checkBox.state = done ? .on : .off
-//        cell.checkBox.contentTintColor = done ? .controlBackgroundColor : .controlTextColor
         
         cell.creditStatusLabel.stringValue = "\(nowCredit) / \(willCredit) / \(needCredit)"
         cell.creditStatusLabel.isHidden = creditStatusHidden

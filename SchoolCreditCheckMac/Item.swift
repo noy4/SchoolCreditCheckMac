@@ -20,51 +20,88 @@ class Section: Object {
     let subjects = List<Subject>()
     var parentSection = LinkingObjects(fromType: Section.self, property: "sections")
     
-    func reloadCreditStatus(realm: Realm){
-//        do {
-//            try realm.write {
-                if sections.count == 0 {
-                    willCredit = subjects.sum(ofProperty: "credit")
-                    nowCredit = subjects.filter("done == true").sum(ofProperty: "credit")
-                    
-                    if willCredit > needCredit {
-                        let over = willCredit - needCredit
-                        let other = realm.objects(Section.self).filter("title == 'その他'")[0]
-                        let otherSubjects = other.subjects.filter("title == %@", title)
-                        if otherSubjects.count != 0 {
-                        otherSubjects[0].credit = over
-                        otherSubjects[0].done = (nowCredit == willCredit)
-                            other.reloadCreditStatus(realm: realm)
-                        }
-                        else if title != "その他" {
-                            let otherSubject = Subject()
-                            otherSubject.title = title
-                            otherSubject.section = "その他"
-                            otherSubject.credit = over
-                            otherSubject.done = (nowCredit == willCredit)
-                            other.subjects.append(otherSubject)
-                        }
-                        
+    func reloadCreditStatus(realm: Realm) -> Int {
+        if sections.count == 0 {
+            willCredit = subjects.sum(ofProperty: "credit")
+            nowCredit = subjects.filter("done == true").sum(ofProperty: "credit")
+            
+            if willCredit > needCredit {
+                if title == "専攻教育科目（選択必修）" {
+                    let over = willCredit - needCredit
+                    let sub = realm.objects(Section.self).filter("title == '専攻教育科目（選択）'")[0]
+                    let subSubjects = sub.subjects.filter("title == %@", title)
+                    if subSubjects.count != 0 {
+                        subSubjects[0].credit = over
+                        subSubjects[0].done = (nowCredit == willCredit)
+                        sub.reloadCreditStatus(realm: realm)
                     }
                     else {
-                        let other = realm.objects(Section.self).filter("title == 'その他'")[0]
-                        let otherSubjects = other.subjects.filter("title == %@", title)
-                        if otherSubjects.count != 0 {
-                            realm.delete(otherSubjects[0])
-                            other.reloadCreditStatus(realm: realm)
-                        }
+                        let subSubject = Subject()
+                        subSubject.title = title
+                        subSubject.section = "専攻教育科目（選択）"
+                        subSubject.credit = over
+                        subSubject.done = (nowCredit == willCredit)
+                        sub.subjects.append(subSubject)
                     }
-                } else {
-                    willCredit = sections.filter("title != 'その他'").sum(ofProperty: "willCredit")
-                    nowCredit = sections.filter("title != 'その他'").sum(ofProperty: "nowCredit")
+                    return 2
+                    
+                } else if title != "その他" {
+                    let over = willCredit - needCredit
+                    let other = realm.objects(Section.self).filter("title == 'その他'")[0]
+                    let otherSubjects = other.subjects.filter("title == %@", title)
+                    if otherSubjects.count != 0 {
+                        otherSubjects[0].credit = over
+                        otherSubjects[0].done = (nowCredit == willCredit)
+                        other.reloadCreditStatus(realm: realm)
+                    }
+                    else {
+                        let otherSubject = Subject()
+                        otherSubject.title = title
+                        otherSubject.section = "その他"
+                        otherSubject.credit = over
+                        otherSubject.done = (nowCredit == willCredit)
+                        other.subjects.append(otherSubject)
+                    }
+                    return 1
                 }
-
                 
-
-//            }
-//        } catch {
-//            print("Error reloading all credit status")
-//        }
+            }
+            else {
+                if title == "専攻教育科目（選択必修）" {
+                    let sub = realm.objects(Section.self).filter("title == '専攻教育科目（選択）'")[0]
+                    let subSubjects = sub.subjects.filter("title == %@", title)
+                    if subSubjects.count != 0 {
+                        realm.delete(subSubjects[0])
+                        sub.reloadCreditStatus(realm: realm)
+                    }
+                    return 2
+                    
+                } else if title != "その他" {
+                    let other = realm.objects(Section.self).filter("title == 'その他'")[0]
+                    let otherSubjects = other.subjects.filter("title == %@", title)
+                    if otherSubjects.count != 0 {
+                        realm.delete(otherSubjects[0])
+                        other.reloadCreditStatus(realm: realm)
+                        return 1
+                    }
+                }
+            }
+        } else {
+            var overWill: Float = 0
+            var overNow: Float = 0
+            if sections.filter("title == '専攻教育科目（選択）'").count != 0 {
+                let overSection = sections.filter("title == '専攻教育科目（選択）'")[0]
+                if overSection.subjects.filter("title == '専攻教育科目（選択必修）'").count != 0 {
+                    let overSubject = overSection.subjects.filter("title == '専攻教育科目（選択必修）'")[0]
+                    overWill = overSubject.credit
+                    overNow = overSubject.done ? overWill : 0
+                }
+            }
+            willCredit = sections.filter("title != 'その他'").sum(ofProperty: "willCredit") - overWill
+            nowCredit = sections.filter("title != 'その他'").sum(ofProperty: "nowCredit") - overNow
+        }
+        
+        return 0
     }
 }
 

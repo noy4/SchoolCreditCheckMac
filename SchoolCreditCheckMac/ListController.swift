@@ -55,23 +55,20 @@ class ListController: NSViewController {
     }
 
     @IBAction func buttonPressed(_ sender: NSButton) {
-//        let newSubject = Database.database().reference().child("subjects").childByAutoId()
-//        let subjectDic = ["title": textField.stringValue, "credit": creditConboBox.floatValue, "section": parentPopUp.titleOfSelectedItem] as [String : Any]
-//
-//        newSubject.setValue(subjectDic){
-//            (error, reference) in
-//
-//            if error != nil {
-//                print(error!)
-//            } else {
-//                print("Subject saved")
-//            }
-//        }
+        let newSubject = Database.database().reference().child("subjects").childByAutoId()
+        let subjectDic = ["title": textField.stringValue, "credit": creditConboBox.floatValue, "section": parentPopUp.titleOfSelectedItem] as [String : Any]
+
+        newSubject.setValue(subjectDic){
+            (error, reference) in
+
+            if error != nil {
+                print(error!)
+            } else {
+                print("Subject saved")
+            }
+        }
         
-//        tableView.beginUpdates()
-//        tableView.reloadData(forRowIndexes: tableView.selectedRowIndexes, columnIndexes: tableView.selectedColumnIndexes)
-////        tableView.deselectAll(<#T##sender: Any?##Any?#>)
-//        tableView.endUpdates()
+        tableView.reloadData()
         
     }
     
@@ -82,11 +79,11 @@ class ListController: NSViewController {
                 if r.sections.count == 0 {
                     switch r.title {
                     case "基幹教育セミナー":
-                        print()
+                        break
                     case "課題協学科目":
-                        print()
+                        break
                     case "その他":
-                        print()
+                        break
                     default:
                         titles.append(r.title)
                     }
@@ -130,6 +127,7 @@ class ListController: NSViewController {
         if sender.clickedRow == -1 {
             return
         }
+        sender.deselectRow(sender.clickedRow)
         let subject = fireItems[sender.clickedRow]
         if var section = realmItems?.filter("title == %@", subject.section)[0] {
             if section.subjects.filter("title == %@", subject.title).count == 0 {
