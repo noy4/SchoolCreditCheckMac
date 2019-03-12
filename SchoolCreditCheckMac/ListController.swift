@@ -12,6 +12,8 @@ import FirebaseDatabase
 
 class ListController: NSViewController {
     
+    @IBOutlet weak var searchPopUp: NSPopUpButton!
+    @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var creditConboBox: NSComboBox!
     @IBOutlet weak var parentPopUp: NSPopUpButton!
     @IBOutlet weak var textField: NSTextField!
@@ -21,6 +23,7 @@ class ListController: NSViewController {
     var realmItems: Results<Section>?
     var subjectItems: Results<Subject>?
     var fireItems: [Subject] = []
+    var filteredItems: [Subject] = []
     let creditArray = ["1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0"]
     
     var outlineView: NSOutlineView?
@@ -41,6 +44,9 @@ class ListController: NSViewController {
         
         realmItems = realm.objects(Section.self).sorted(byKeyPath: "date")
         
+        searchPopUp.removeAllItems()
+        searchPopUp.addItem(withTitle: "すべて")
+        searchPopUp.addItems(withTitles: parentTitles())
         parentPopUp.removeAllItems()
         parentPopUp.addItems(withTitles: parentTitles())
         creditConboBox.removeAllItems()
@@ -113,6 +119,7 @@ class ListController: NSViewController {
             subject.credit = credit as! Float
             
             self.fireItems.append(subject)
+            self.filteredItems.append(subject)
             
             self.tableView.reloadData()
         }
@@ -121,6 +128,24 @@ class ListController: NSViewController {
     
     func loadSubjectItems(){
         subjectItems = realm.objects(Subject.self).sorted(byKeyPath: "date")
+    }
+    
+    func filterSubjects(){
+        if searchPopUp.indexOfSelectedItem == 0 {
+            if searchField.stringValue.count != 0 {
+                filteredItems = fireItems.filter{$0.title .contains(self.searchField.stringValue)}
+            } else {
+                filteredItems = fireItems
+            }
+        } else {
+            if searchField.stringValue.count != 0 {
+                filteredItems = fireItems.filter{$0.section == searchPopUp.titleOfSelectedItem && $0.title .contains(self.searchField.stringValue)}
+            } else {
+                filteredItems = fireItems.filter{$0.section == searchPopUp.titleOfSelectedItem}
+            }
+        }
+        
+        tableView.reloadData()
     }
     
     @IBAction func tableViewClicked(_ sender: NSTableView) {
@@ -151,11 +176,14 @@ class ListController: NSViewController {
         }
     }
     
+    @IBAction func searchPopUpChanged(_ sender: NSPopUpButtonCell) {
+        filterSubjects()
+    }
 }
 
 extension ListController: NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return fireItems.count
+        return filteredItems.count
     }
 }
 
@@ -175,7 +203,7 @@ extension ListController: NSTableViewDelegate {
         let textColor1 = NSColor.alternateSelectedControlTextColor
         let textColor2 = NSColor.controlTextColor
         
-        let item = fireItems[row]
+        let item = filteredItems[row]
         let rowView = tableView.rowView(atRow: row, makeIfNecessary: false)
         
         if tableColumn == tableView.tableColumns[0] {
@@ -218,6 +246,14 @@ extension ListController: NSTableViewDelegate {
 //        tableView.reloadData()
 //    }
     
+}
+
+extension ListController: NSSearchFieldDelegate {
     
-    
+    func controlTextDidChange(_ obj: Notification) {
+        filterSubjects()
+//        DispatchQueue.main.async {
+//            self.searchField.resignFirstResponder()
+//        }
+    }
 }

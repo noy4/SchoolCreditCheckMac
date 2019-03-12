@@ -98,7 +98,6 @@ class HomeController: NSViewController {
             var item = outlineView.item(atRow: selectedRow)
             if let subject = item as? Subject {
                 if subject.parentSection[0].title != "その他" && subject.title != "専攻教育科目（選択必修）" {
-                    print(subject.section)
                     subjectRows.append(selectedRow)
                     do {
                         try realm.write {
@@ -121,6 +120,7 @@ class HomeController: NSViewController {
                     if j == selectedRows.count - 1 {
                         var flag1 = false
                         var flag2 = false
+                        var flag3 = false
                         let orderedI = NSOrderedSet(array: sectionRows)
                         let orderedIArray = (orderedI.array as! [Int]).sorted(by: >)
                         for k in orderedIArray {
@@ -128,12 +128,13 @@ class HomeController: NSViewController {
                                 do {
                                     try realm.write {
                                         let flag = section.reloadCreditStatus(realm: realm)
-                                        print(flag)
                                         switch flag {
                                         case 1:
                                             flag1 = true
                                         case 2:
                                             flag2 = true
+                                        case 3:
+                                            flag3 = true
                                         default:
                                             break
                                         }
@@ -155,10 +156,13 @@ class HomeController: NSViewController {
                         }
                         
                         if flag1 {
-                            reloadOther()
+                            reloadTheSection(1)
                         }
                         if flag2 {
-                            reloadSub()
+                            reloadTheSection(2)
+                        }
+                        if flag3 {
+                            reloadTheSection(3)
                         }
                         
                         
@@ -190,6 +194,7 @@ class HomeController: NSViewController {
         var section = subject.parentSection[0]
         var flag1 = false
         var flag2 = false
+        var flag3 = false
         while true {
             do {
                 try realm.write {
@@ -199,6 +204,8 @@ class HomeController: NSViewController {
                         flag1 = true
                     case 2:
                         flag2 = true
+                    case 3:
+                        flag3 = true
                     default:
                         break
                     }
@@ -217,31 +224,33 @@ class HomeController: NSViewController {
         section = subject.parentSection[0]
         
         if flag1 {
-            reloadOther()
+            reloadTheSection(1)
         }
         if flag2 {
-            reloadSub()
+            reloadTheSection(2)
+        }
+        if flag3 {
+            reloadTheSection(3)
         }
         
     }
     
-    func reloadOther() {
-        for j in 0..<outlineView.numberOfRows {
-            let item = outlineView.item(atRow: j)
-            if let anItem = item as? Section {
-                if anItem.title == "その他" {
-                    outlineView.reloadItem(item, reloadChildren: true)
-                    outlineView.reloadData(forRowIndexes: IndexSet(integer: j), columnIndexes: IndexSet(integer: 0))
-                }
-            }
+    func reloadTheSection(_ pattern: Int) {
+        var title = ""
+        switch pattern {
+        case 1:
+            title = "その他"
+        case 2:
+            title = "専攻教育科目（選択）"
+        case 3:
+            title = "専攻教育科目（学部内自由）"
+        default:
+            break
         }
-    }
-    
-    func reloadSub() {
         for j in 0..<outlineView.numberOfRows {
             let item = outlineView.item(atRow: j)
             if let anItem = item as? Section {
-                if anItem.title == "専攻教育科目（選択）" {
+                if anItem.title == title {
                     outlineView.reloadItem(item, reloadChildren: true)
                     outlineView.reloadData(forRowIndexes: IndexSet(integer: j), columnIndexes: IndexSet(integer: 0))
                 }
